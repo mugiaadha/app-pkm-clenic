@@ -1,0 +1,59 @@
+
+<?php
+
+
+
+if ($hr >= 140) {
+	# code...
+$hry=685;
+$hrn=3;
+
+}else if($hr >= 130 && $hr <= 139 ){
+	$hry =703;
+	$hrn=2;
+
+}else if ($hr >= 120 && $hr <= 129) {
+	# code...
+	$hry=721;
+	$hrn=2;
+
+}else if ($hr >= 110 && $hr <= 109) {
+	# code...
+	$hry=739;
+	$hrn=1;
+}else if ($hr >= 100 && $hr <= 99  ) {
+	# code...
+$hry=757;
+$hrn=1;
+}else if ($hr >= 90 && $hr <= 89 ) {
+	# code...
+	$hry=775;
+	$hrn=1;
+}else if ($hr >= 80 && $hr <= 79) {
+	# code...
+	$hry=793;
+	$hrn=0;
+}else if ($td >= 70 && $hr <= 69) {
+	# code...
+	$hry=811;
+	$hrn=0;
+}else if ($hr >= 60 && $hr <= 59) {
+	# code...
+	$hry=829;
+	$hrn=0;
+}else if ($hr >= 50 && $hr <= 49) {
+	# code...
+	$hry=847;
+	$hrn=1;
+}else if ($hr >= 40 && $hr <= 39) {
+	# code...
+	$hry=865;
+	$hrn=3;
+}else if ($hr >= 30 && $hr <= 29 ) {
+	# code...
+	$hry=883;
+	$hrn=3;
+}
+
+?>
+

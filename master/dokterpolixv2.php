@@ -1,0 +1,70 @@
+<?php
+
+header("Access-Control-Allow-Origin: *");
+header("Content-Type: application/json; charset=UTF-8");
+
+include '../koneksi.php';
+
+$kdcabang = $_GET['kdcabang'];
+$kdpoli = $_GET['kdpoli'];
+$tgl = $_GET['tgl'];
+
+// Set timezone
+date_default_timezone_set('Asia/Jakarta');
+
+// Gunakan $tgl untuk $todayDate
+$todayDate = date("Y-m-d", strtotime($tgl));
+$hari = date('D', strtotime($tgl));
+
+// Mapping hari
+if ($hari === 'Sun') {
+    $hariq = 'minggu';
+} else if ($hari === 'Mon') {
+    $hariq = 'senin';
+} else if ($hari === 'Tue') {
+    $hariq = 'selasa';
+} else if ($hari === 'Wed') {
+    $hariq = 'rabu';
+} else if ($hari === 'Thu') {
+    $hariq = 'kamis';
+} else if ($hari === 'Fri') {
+    $hariq = 'jumat';
+} else if ($hari === 'Sat') {
+    $hariq = 'sabtu';
+} else {
+    $hariq = ''; // Default jika hari tidak valid
+}
+
+$query = "
+SELECT 
+    a.kddokter, a.namdokter, b.kdpoli, c.nampoli, d.$hariq AS hari,
+    (SELECT f.jadwal FROM jadwalpraktekv2 f WHERE f.kdpoli = b.kdpoli AND f.kddokter = a.kddokter AND f.tgl = '$todayDate') AS jadwal
+FROM 
+    dokter a 
+LEFT JOIN 
+    dokterklinik b ON a.kddokter = b.kddokter AND a.kdcabang = b.kdcabang 
+LEFT JOIN 
+    poliklinik c ON b.kdpoli = c.kdpoli AND b.kdcabang = c.kdcabang
+LEFT JOIN 
+    jadwalpraktek d ON a.kddokter = d.kddokter AND d.kdpoli = c.kdpoli
+WHERE 
+    b.kdcabang = '$kdcabang' AND b.kdpoli = '$kdpoli' AND a.aktif = '0'
+ORDER BY 
+    nampoli ASC";
+
+
+// echo $query;
+$response = array();
+$result = mysqli_query($conn, $query);
+
+while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+    $response[] = $row;
+}
+
+$data = json_encode($response);
+
+echo preg_replace('/\\r\\n|\\r|\\n\\r|\\n/m', ' ', $data);
+
+mysqli_close($conn);
+
+?>
